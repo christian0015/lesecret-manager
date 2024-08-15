@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Statistics = () => {
-  const [sales, setSales] = useState([]);
+  const [ventes, setVentes] = useState([]);
   const [products, setProducts] = useState([]);
   const [servers, setServers] = useState([]);
   const [tables, setTables] = useState([]);
@@ -20,12 +20,12 @@ const Statistics = () => {
         }
 
         const user = JSON.parse(userString);
-        if (user.role !== 'admin' && user.role !== 'gerant') {
-          throw new Error('Non autorisé: Insufficient permissions');
+        if (user.role !== 'admin') {
+          throw new Error('Non autorisé: Aucune permission');
         }
 
-        const [salesResponse, productsResponse, serversResponse] = await Promise.all([
-          axios.get('https://lesecret-backend-stock.vercel.app/api/sales', {
+        const [ventesResponse, productsResponse, serversResponse] = await Promise.all([
+          axios.get('https://lesecret-backend-stock.vercel.app/api/ventes', {
             headers: { Authorization: `Bearer ${user.token}` }
           }),
           axios.get('https://lesecret-backend-stock.vercel.app/api/products', {
@@ -36,7 +36,7 @@ const Statistics = () => {
           })
         ]);
 
-        setSales(salesResponse.data);
+        setVentes(ventesResponse.data);
         setProducts(productsResponse.data);
         setServers(serversResponse.data);
       } catch (err) {
@@ -49,28 +49,28 @@ const Statistics = () => {
   }, []);
 
   // Chiffre d'Affaires Journalier et par Sélection de Date
-  const calculateRevenue = (sales, date = null, startDate = null, endDate = null) => {
-    const filteredSales = sales.filter(sale => {
-      const saleDate = new Date(sale.date);
+  const calculateRevenue = (ventes, date = null, startDate = null, endDate = null) => {
+    const filteredVentes = ventes.filter(vente => {
+      const venteDate = new Date(vente.date);
       if (date) {
-        return saleDate.toDateString() === new Date(date).toDateString();
+        return venteDate.toDateString() === new Date(date).toDateString();
       }
       if (startDate && endDate) {
-        return saleDate >= new Date(startDate) && saleDate <= new Date(endDate);
+        return venteDate >= new Date(startDate) && venteDate <= new Date(endDate);
       }
       return true;
     });
-    return filteredSales.reduce((total, sale) => total + sale.totalPrice, 0);
+    return filteredVentes.reduce((total, vente) => total + vente.totalPrice, 0);
   };
 
   // Ventes Par Catégorie
-  const salesByCategory = () => {
+  const ventesByCategory = () => {
     const categoryTotals = {};
-    sales.forEach(sale => {
-      const product = products.find(p => p._id === sale.product._id);
+    ventes.forEach(vente => {
+      const product = products.find(p => p._id === vente.product._id);
       if (product) {
         const category = product.category;
-        categoryTotals[category] = (categoryTotals[category] || 0) + sale.totalPrice;
+        categoryTotals[category] = (categoryTotals[category] || 0) + vente.totalPrice;
       }
     });
     return categoryTotals;
@@ -79,8 +79,8 @@ const Statistics = () => {
   // Listing des Meilleurs Produits Vendus
   const topSellingProducts = () => {
     const productCounts = {};
-    sales.forEach(sale => {
-      productCounts[sale.product._id] = (productCounts[sale.product._id] || 0) + sale.quantity;
+    ventes.forEach(vente => {
+      productCounts[vente.product._id] = (productCounts[vente.product._id] || 0) + vente.quantity;
     });
     return Object.entries(productCounts)
       .sort(([, a], [, b]) => b - a)
@@ -92,11 +92,11 @@ const Statistics = () => {
   const topRevenueProducts = () => {
     const productRevenue = {};
   
-    sales.forEach(sale => {
-      const product = products.find(p => p._id === sale.product._id);
+    ventes.forEach(vente => {
+      const product = products.find(p => p._id === vente.product._id);
       if (product && product.price !== undefined && product.costPrice !== undefined) {
-        const revenue = sale.quantity * (product.price - product.costPrice);
-        productRevenue[sale.product._id] = (productRevenue[sale.product._id] || 0) + revenue;
+        const revenue = vente.quantity * (product.price - product.costPrice);
+        productRevenue[vente.product._id] = (productRevenue[vente.product._id] || 0) + revenue;
       }
     });
   
@@ -114,9 +114,9 @@ const Statistics = () => {
   // Performances des Serveurs
   const serverPerformance = () => {
     const serverTotals = {};
-    sales.forEach(sale => {
-      const serverId = sale.server._id;
-      serverTotals[serverId] = (serverTotals[serverId] || 0) + sale.totalPrice;
+    ventes.forEach(vente => {
+      const serverId = vente.server._id;
+      serverTotals[serverId] = (serverTotals[serverId] || 0) + vente.totalPrice;
     });
     return serverTotals;
   };
@@ -124,9 +124,9 @@ const Statistics = () => {
   // Performances des Tables
   const tablePerformance = () => {
     const tableTotals = {};
-    sales.forEach(sale => {
-      const tableNumber = sale.table;
-      tableTotals[tableNumber] = (tableTotals[tableNumber] || 0) + sale.totalPrice;
+    ventes.forEach(vente => {
+      const tableNumber = vente.table;
+      tableTotals[tableNumber] = (tableTotals[tableNumber] || 0) + vente.totalPrice;
     });
     return tableTotals;
   };
@@ -145,7 +145,7 @@ const Statistics = () => {
       <div>
         <label>Date Unique:</label>
         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-        <p>Chiffre d'Affaires Journalier: {calculateRevenue(sales, selectedDate).toFixed(2)} Fc</p>
+        <p>Chiffre d'Affaires Journalier: {calculateRevenue(ventes, selectedDate).toFixed(2)} Fc</p>
       </div>
 
       <div>
@@ -153,13 +153,13 @@ const Statistics = () => {
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
         <label>Date de Fin:</label>
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-        <p>Chiffre d'Affaires pour la Période: {calculateRevenue(sales, null, startDate, endDate).toFixed(2)} Fc</p>
+        <p>Chiffre d'Affaires pour la Période: {calculateRevenue(ventes, null, startDate, endDate).toFixed(2)} Fc</p>
       </div>
 
       <div>
         <h4>Ventes Par Catégorie</h4>
         <ul>
-          {Object.entries(salesByCategory()).map(([category, total]) => (
+          {Object.entries(ventesByCategory()).map(([category, total]) => (
             <li key={category}>{category}: {total.toFixed(2)} Fc</li>
           ))}
         </ul>

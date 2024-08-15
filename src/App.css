@@ -347,7 +347,7 @@ ul {
 }
 
 /* Vente List */
-.sales-list {
+.ventes-list {
   background-color: #ffffff;
   border-radius: 8px;
   padding: 20px;
@@ -356,51 +356,51 @@ ul {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.sales-list h3 {
+.ventes-list h3 {
   color: #333;
   text-align: center;
   margin-bottom: 20px;
   font-family: 'Arial', sans-serif;
 }
 
-.sales-list p {
+.ventes-list p {
   color: #e74c3c;
   font-weight: bold;
   text-align: center;
   margin-bottom: 10px;
 }
 
-.sales-list table {
+.ventes-list table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
 
-.sales-list th,
-.sales-list td {
+.ventes-list th,
+.ventes-list td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   font-family: 'Arial', sans-serif;
 }
 
-.sales-list th {
+.ventes-list th {
   background-color: #f4f4f4;
   color: #333;
 }
 
-.sales-list tr:hover {
+.ventes-list tr:hover {
   background-color: #f1f1f1;
 }
 
-.sales-list td {
+.ventes-list td {
   color: #555;
 }
 
 
 /* Vente */
 
-.sales-manager {
+.ventes-manager {
   background-color: #f8f9fa;
   border-radius: 8px;
   padding: 20px;
@@ -409,14 +409,14 @@ ul {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.sales-manager h3 {
+.ventes-manager h3 {
   color: #333;
   text-align: center;
   margin-bottom: 20px;
   font-family: 'Arial', sans-serif;
 }
 
-.sales-manager label {
+.ventes-manager label {
   display: block;
   margin-bottom: 8px;
   color: #555;
@@ -424,8 +424,8 @@ ul {
   font-family: 'Arial', sans-serif;
 }
 
-.sales-manager input,
-.sales-manager select {
+.ventes-manager input,
+.ventes-manager select {
   width: 100%;
   padding: 8px;
   margin-bottom: 20px;
@@ -434,14 +434,14 @@ ul {
   font-family: 'Arial', sans-serif;
 }
 
-.sales-manager input:focus,
-.sales-manager select:focus {
+.ventes-manager input:focus,
+.ventes-manager select:focus {
   border-color: #1d4ba5;
   outline: none;
   box-shadow: 0 0 5px rgba(29, 75, 165, 0.5);
 }
 
-.sales-manager button {
+.ventes-manager button {
   background-color: #1d4ba5;
   color: white;
   padding: 10px 15px;
@@ -453,11 +453,11 @@ ul {
   font-size: 16px;
 }
 
-.sales-manager button:hover {
+.ventes-manager button:hover {
   background-color: #15407c;
 }
 
-.sales-manager .error {
+.ventes-manager .error {
   color: red;
   font-weight: bold;
   text-align: center;

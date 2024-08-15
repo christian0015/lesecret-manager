@@ -11,7 +11,7 @@ const Register = () => {
 
   useEffect(() => {
     // Récupère le rôle de l'utilisateur connecté
-    const userString = localStorage.getItem('user');
+    const userString = localStorage.getItem('userLesecret');
     if (userString) {
       const user = JSON.parse(userString);
       setUserRole(user.role);

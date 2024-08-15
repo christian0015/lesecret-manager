@@ -1,6 +1,6 @@
 import React from 'react';
-import Saless from '../components/Sales';
-import SalesList from '../components/SalesList';
+import Saless from '../components/Vente';
+import SalesList from '../components/VentesList';
 
 const Sales = () => {
   return (

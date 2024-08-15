@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
-import ProductForm from './components/ProductForm';
+import ProductForm from './components/ProductAddQuatity';
 import Sales from './pages/Sales';
 import Historique from './pages/Historique';
 import Statistique from './components/Statistique';

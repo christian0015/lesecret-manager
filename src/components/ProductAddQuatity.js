@@ -5,7 +5,6 @@ const UpdateQuantity = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [costPrice, setCostPrice] = useState(''); // Nouveau champ pour le prix de revient
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -19,7 +18,7 @@ const UpdateQuantity = () => {
 
         const user = JSON.parse(userString);
         if (user.role !== 'admin') {
-          throw new Error('Non autorisé: Insufficient permissions');
+          throw new Error('Non autorisé: Aucune permission');
         }
 
         const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/products', {
@@ -45,13 +44,12 @@ const UpdateQuantity = () => {
 
       const user = JSON.parse(userString);
       if (user.role !== 'admin') {
-        throw new Error('Non autorisé: Insufficient permissions');
+        throw new Error('Non autorisé: Aucune permission');
       }
 
       await axios.post('https://lesecret-backend-stock.vercel.app/api/products/update-quantity', {
         productId: selectedProduct,
         quantity: Number(quantity),
-        costPrice: Number(costPrice) // Envoyer le coût de revient
       }, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
@@ -59,7 +57,6 @@ const UpdateQuantity = () => {
       setMessage('Quantity updated successfully');
       setSelectedProduct('');
       setQuantity('');
-      setCostPrice(''); // Réinitialiser le prix de revient
     } catch (err) {
       console.error(err.message);
       setMessage('Error updating quantity: ' + err.message);
@@ -95,15 +92,7 @@ const UpdateQuantity = () => {
             required
           />
         </div>
-        <div>
-          <label>Prix de revient:</label>
-          <input
-            type="number"
-            value={costPrice}
-            onChange={(e) => setCostPrice(e.target.value)}
-            required
-          />
-        </div>
+        
         <button type="submit">Approvisionner</button>
       </form>
     </div>

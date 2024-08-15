@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const SalesManager = () => {
+const VentesManager = () => {
   const [products, setProducts] = useState([]);
   const [servers, setServers] = useState([]); // Liste des serveurs pour le formulaire
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState('');
   const [serverId, setServerId] = useState('');
   const [table, setTable] = useState('');
-  const [sales, setSales] = useState([]);
+  const [ventes, setVentes] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const SalesManager = () => {
 
         const user = JSON.parse(userString);
         if (user.role !== 'admin' && user.role !== 'gerant') {
-          throw new Error('Non autorisé: Insufficient permissions');
+          throw new Error('Non autorisé: Aucune permission');
         }
 
         const [productsResponse, serversResponse] = await Promise.all([
@@ -45,8 +45,8 @@ const SalesManager = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch sales
-    const fetchSales = async () => {
+    // Fetch ventes
+    const fetchVentes = async () => {
       try {
         const userString = localStorage.getItem('user');
         if (!userString) {
@@ -55,23 +55,23 @@ const SalesManager = () => {
 
         const user = JSON.parse(userString);
         if (user.role !== 'admin' && user.role !== 'gerant') {
-          throw new Error('Non autorisé: Insufficient permissions');
+          throw new Error('Non autorisé: Aucune permission');
         }
 
-        const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/sales', {
+        const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/ventes', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
-        setSales(response.data);
+        setVentes(response.data);
       } catch (err) {
         console.error(err.message);
         setError(err.message);
       }
     };
 
-    fetchSales();
+    fetchVentes();
   }, []);
 
-  const handleAddSale = async (e) => {
+  const handleAddVente = async (e) => {
     e.preventDefault();
     try {
       const userString = localStorage.getItem('user');
@@ -81,10 +81,10 @@ const SalesManager = () => {
 
       const user = JSON.parse(userString);
       if (user.role !== 'admin' && user.role !== 'gerant') {
-        throw new Error('Non autorisé: Insufficient permissions');
+        throw new Error('Non autorisé: Aucune permission');
       }
 
-      await axios.post('https://lesecret-backend-stock.vercel.app/api/sales', { productId, quantity, serverId, table }, {
+      await axios.post('https://lesecret-backend-stock.vercel.app/api/ventes', { productId, quantity, serverId, table }, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setProductId('');
@@ -92,11 +92,11 @@ const SalesManager = () => {
       setServerId('');
       setTable('');
 
-      // Fetch sales again after adding a new one
-      const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/sales', {
+      // Fetch ventes again after adding a new one
+      const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/ventes', {
         headers: { Authorization: `Bearer ${user.token}` }
       });
-      setSales(response.data);
+      setVentes(response.data);
     } catch (err) {
       console.error(err.message);
       setError(err.message);
@@ -104,11 +104,11 @@ const SalesManager = () => {
   };
 
   return (
-    <div className="sales-manager">
+    <div className="ventes-manager">
       <h3>Gestion de Ventes</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       
-      <form onSubmit={handleAddSale}>
+      <form onSubmit={handleAddVente}>
         <div>
           <label>Boisson:</label>
           <select value={productId} onChange={(e) => setProductId(e.target.value)} required>
@@ -142,4 +142,4 @@ const SalesManager = () => {
   );
 };
 
-export default SalesManager;
+export default VentesManager;

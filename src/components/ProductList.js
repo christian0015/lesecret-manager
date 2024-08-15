@@ -15,7 +15,7 @@ const ProductList = () => {
         }
 
         const user = JSON.parse(userString);
-        if (user.role !== 'admin' && user.role !== 'gerant') {
+        if (user.role !== 'admin' && user.role !== 'gerant' && user.role !== 'serveur') {
           console.log("ur:", user.role)
           throw new Error('Non autorisé: Insufficient permissions');
         }

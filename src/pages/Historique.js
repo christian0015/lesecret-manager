@@ -1,12 +1,12 @@
 import React from 'react';
-import SupplyHistory from '../components/SupplyHistory';
-import SalesList from '../components/SalesList';
+import Historiques from '../components/Historiques';
+import SalesList from '../components/VentesList';
 
 const Historique = () => {
   return (
     <div className="historiquePage">
       {/* <h2>Sales</h2> */}
-      <SupplyHistory />
+      <Historiques />
       <SalesList />
     </div>
   );

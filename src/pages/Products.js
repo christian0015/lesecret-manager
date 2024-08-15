@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from '../components/ProductList';
-import ProductForm from '../components/ProductForm';
-import SupplyHistory  from '../components/SupplyHistory';
+import ProductForm from '../components/ProductAddQuatity';
+import SupplyHistory  from '../components/Historiques';
 
 const Products = () => {
   return (

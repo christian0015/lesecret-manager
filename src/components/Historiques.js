@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const SupplyHistory = () => {
-  const [supplyHistory, setSupplyHistory] = useState([]);
+const Historiques = () => {
+  const [historique, setHistorique] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchSupplyHistory = async () => {
+    const fetchHistorique = async () => {
       try {
         // Récupère le token et vérifie le rôle de l'utilisateur
         const userString = localStorage.getItem('user');
@@ -20,17 +20,17 @@ const SupplyHistory = () => {
         }
 
         // Effectue la requête pour récupérer l'historique des approvisionnements
-        const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/products/getSupply', {
+        const response = await axios.get('https://lesecret-backend-stock.vercel.app/api/products/getHistorique', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
-        setSupplyHistory(response.data);
+        setHistorique(response.data);
       } catch (err) {
         console.error(err.message);
         setError(err.message);
       }
     };
 
-    fetchSupplyHistory();
+    fetchHistorique();
   }, []);
 
   return (
@@ -46,7 +46,7 @@ const SupplyHistory = () => {
       </tr>
     </thead>
     <tbody>
-      {supplyHistory.map(supply => (
+      {historique.map(supply => (
         <tr key={supply._id}>
           <td>{supply.product.name}</td>
           <td>{supply.quantity}</td>
@@ -59,4 +59,4 @@ const SupplyHistory = () => {
   );
 };
 
-export default SupplyHistory;
+export default Historiques;
