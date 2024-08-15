@@ -16,7 +16,7 @@ const Historiques = () => {
 
         const user = JSON.parse(userString);
         if (user.role !== 'admin' && user.role !== 'gerant') {
-          throw new Error('Non autorisé: Insufficient permissions');
+          throw new Error('Non autorisé: Aucune permission');
         }
 
         // Effectue la requête pour récupérer l'historique des approvisionnements
